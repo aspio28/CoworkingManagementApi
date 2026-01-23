@@ -1,14 +1,13 @@
+using CoworkingManagement;
 using CoworkingManagement.Application;
 using CoworkingManagement.Infrastructure;
+using CoworkingManagement.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddApplication();
-builder.Services.AddInfrastructure(builder.Configuration);
-
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddPresentation()
+                .AddApplication()
+                .AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 
@@ -17,6 +16,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.Services.ApplyMigrations();
 }
 
 app.UseHttpsRedirection();
