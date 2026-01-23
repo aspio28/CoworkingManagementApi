@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "VlfoEntCwJWIddy7dU8bTV2cy9qqqcymlpQTv5Wo1ehnLw+Ck7owQLefSzGrPOYlaMmT0CNHK1jdokxEfsUAqA==",
+  "success": true,
+  "projectFilePath": "/home/jorge/spt/tech-test/CoworkingManagementApi/src/CoworkingManagement.Application/CoworkingManagement.Application.csproj",
+  "expectedPackageFiles": [
+    "/home/jorge/.nuget/packages/fluentvalidation/11.11.0/fluentvalidation.11.11.0.nupkg.sha512",
+    "/home/jorge/.nuget/packages/fluentvalidation.dependencyinjectionextensions/11.11.0/fluentvalidation.dependencyinjectionextensions.11.11.0.nupkg.sha512",
+    "/home/jorge/.nuget/packages/mediatr/12.4.1/mediatr.12.4.1.nupkg.sha512",
+    "/home/jorge/.nuget/packages/mediatr.contracts/2.0.1/mediatr.contracts.2.0.1.nupkg.sha512",
+    "/home/jorge/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/8.0.0/microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512",
+    "/home/jorge/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.22/microsoft.aspnetcore.app.ref.8.0.22.nupkg.sha512"
+  ],
+  "logs": []
+}

@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "pOGXaEx9qL703WRlOQLLQDR9X/93Yb6Lz6+nxw9lm3VAbeVPpLbkpM2qUK+txf2nk4p/u1z3A8lai4y1q1EcMg==",
+  "success": true,
+  "projectFilePath": "/home/jorge/spt/tech-test/CoworkingManagementApi/src/CoworkingManagement.Domain/CoworkingManagement.Domain.csproj",
+  "expectedPackageFiles": [
+    "/home/jorge/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.22/microsoft.aspnetcore.app.ref.8.0.22.nupkg.sha512"
+  ],
+  "logs": []
+}
