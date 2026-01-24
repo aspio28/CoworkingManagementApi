@@ -1,4 +1,5 @@
 using CoworkingManagement;
+using CoworkingManagement.Api.Middleware;
 using CoworkingManagement.Application;
 using CoworkingManagement.Infrastructure;
 using CoworkingManagement.Infrastructure.Extensions;
@@ -11,6 +12,7 @@ builder.Services.AddPresentation()
 
 var app = builder.Build();
 
+app.UseMiddleware<ExceptionMiddleware>();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
