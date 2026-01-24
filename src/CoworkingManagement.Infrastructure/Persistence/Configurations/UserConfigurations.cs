@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CoworkingManagement.Infrastructure.Persistence.Configurations;
 
-public class UserConfigurations : IEntityTypeConfiguration<User>
+public class UserConfigurations : BaseEntityConfiguration<User>
 {
-    public void Configure(EntityTypeBuilder<User> builder)
+    public override void Configure(EntityTypeBuilder<User> builder)
     {
-        builder.ToTable("Users");
+        base.Configure(builder);
         
-        builder.HasKey(u => u.Id);
+        builder.ToTable("Users");
 
         builder.Property(u => u.Name).IsRequired().HasMaxLength(100);
 

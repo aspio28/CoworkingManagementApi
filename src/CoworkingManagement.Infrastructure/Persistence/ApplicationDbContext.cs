@@ -1,4 +1,5 @@
 using CoworkingManagement.Application.Common.Interfaces;
+using CoworkingManagement.Domain.Common;
 using CoworkingManagement.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,5 +18,26 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+    }
+
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        var entries = ChangeTracker
+            .Entries<BaseEntity>();
+
+        foreach (var entityEntry in entries)
+        {
+            switch (entityEntry.State)
+            {
+                case EntityState.Added:
+                    entityEntry.Entity.CreatedAt = DateTime.UtcNow;
+                    break;
+                case EntityState.Modified:
+                    entityEntry.Entity.UpdatedAt = DateTime.UtcNow;
+                    break;
+            }
+        }
+
+        return base.SaveChangesAsync(cancellationToken);
     }
 }

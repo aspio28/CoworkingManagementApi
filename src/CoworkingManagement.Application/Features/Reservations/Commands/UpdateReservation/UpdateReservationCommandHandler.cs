@@ -5,13 +5,20 @@ using CoworkingManagement.Domain.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace CoworkingManagement.Application.Features.Reservations.Commands.CreateReservation;
+namespace CoworkingManagement.Application.Features.Reservations.Commands.UpdateReservation;
 
-internal sealed class CreateReservationCommandHandler(IApplicationDbContext context): IRequestHandler<CreateReservationCommand, Unit>
+internal sealed class UpdateReservationCommandHandler(IApplicationDbContext context): IRequestHandler<UpdateReservationCommand, Unit>
 {
     private readonly IApplicationDbContext _context = context;
-    public async Task<Unit> Handle(CreateReservationCommand command, CancellationToken cancellationToken)
+
+    public async Task<Unit> Handle(UpdateReservationCommand command, CancellationToken cancellationToken)
     {
+        var reservation = await _context.Reservations.FirstOrDefaultAsync(r => r.Id == command.ReservationId, cancellationToken);
+
+        if(reservation == null)
+        {
+            throw new NotFoundException(nameof(reservation), command.ReservationId);
+        }
 
         bool isRoomOccupied = await _context.Reservations.AnyAsync(r => r.RoomId == command.RoomId && 
                         r.Status != ReservationStatus.Cancelled && 
@@ -22,17 +29,15 @@ internal sealed class CreateReservationCommandHandler(IApplicationDbContext cont
         {
             throw new BusinessException("Room is already booked for the selected time slot.");
         }
-        Reservation reservation = new Reservation
-        (
+
+        reservation.Update(
             command.RoomId,
             command.UserId,
-            ReservationStatus.Reserved,
             command.StartDate,
             command.EndDate
         );
-        _context.Reservations.Add(reservation);
-        await _context.SaveChangesAsync(cancellationToken);
 
+        await _context.SaveChangesAsync(cancellationToken);
         return Unit.Value;
     }
 }

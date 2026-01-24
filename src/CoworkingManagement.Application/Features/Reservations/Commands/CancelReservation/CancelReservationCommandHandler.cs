@@ -3,12 +3,12 @@ using CoworkingManagement.Domain.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace CoworkingManagement.Application.Features.Reservations.Commands.RemoveReservation;
+namespace CoworkingManagement.Application.Features.Reservations.Commands.CancelReservation;
 
-internal sealed class RemoveReservationCommandHandler(IApplicationDbContext context): IRequestHandler<RemoveReservationCommand, Unit>
+internal sealed class CancelReservationCommandHandler(IApplicationDbContext context): IRequestHandler<CancelReservationCommand, Unit>
 {
     private readonly IApplicationDbContext _context = context;
-    public async Task<Unit> Handle(RemoveReservationCommand command, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(CancelReservationCommand command, CancellationToken cancellationToken)
     {
         var reservation = await _context.Reservations.FirstOrDefaultAsync(r => r.Id == command.ReservationId, cancellationToken);
 
@@ -17,17 +17,18 @@ internal sealed class RemoveReservationCommandHandler(IApplicationDbContext cont
             throw new NotFoundException(nameof(reservation), command.ReservationId);
         }
 
-        else if (reservation.Date < DateTime.Today)
+        else if (reservation.EndDate < DateTime.UtcNow)
         {
             throw new BusinessException("Cannot remove past reservations.");
         }
 
-        else if (reservation.Date == DateTime.Today && reservation.StartTime <= DateTime.Now.TimeOfDay)
+        else if (reservation.StartDate <= DateTime.UtcNow)
         {
             throw new BusinessException("Cannot remove ongoing or past reservations.");
         }
 
-        _context.Reservations.Remove(reservation);
+        reservation.Cancel();
+
         await _context.SaveChangesAsync(cancellationToken);
 
         return Unit.Value;

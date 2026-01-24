@@ -1,11 +1,26 @@
+using CoworkingManagement.Domain.Common;
 using CoworkingManagement.Domain.Enums;
 
 namespace CoworkingManagement.Domain.Entities;
 
-public class Room
+public class Room: BaseEntity
 {
-    public Guid Id { get; set; }
-    public int Capacity { get; set; }
-    public RoomStatus Status { get; set; }
-    public ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
+    public int Capacity { get; private set; }
+    public string Location { get; private set; } = string.Empty;
+    public RoomStatus Status { get; private set; }
+    public ICollection<Reservation> Reservations { get; private set; } = new List<Reservation>();
+
+    public Room(int capacity, RoomStatus status, string location)
+    {
+        Id = Guid.NewGuid();
+        Capacity = capacity;
+        Status = status;
+        Location = location;
+    }
+    public void Update(int capacity, RoomStatus status, string location)
+    {
+        Capacity = capacity;
+        Status = status;
+        Location = location;
+    }
 }

@@ -5,7 +5,6 @@ namespace CoworkingManagement.Application.Features.Reservations.Commands.CreateR
 public record CreateReservationCommand(
     Guid RoomId,
     Guid UserId,
-    DateTime Date,
-    TimeSpan StartTime,
-    TimeSpan EndTime
+    DateTime StartDate,
+    DateTime EndDate
 ): IRequest<Unit>;

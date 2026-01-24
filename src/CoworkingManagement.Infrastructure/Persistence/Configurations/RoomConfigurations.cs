@@ -4,13 +4,12 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CoworkingManagement.Infrastructure.Persistence.Configurations;
 
-public class RoomConfigurations : IEntityTypeConfiguration<Room>
+public class RoomConfigurations : BaseEntityConfiguration<Room>
 {
-    public void Configure(EntityTypeBuilder<Room> builder)
+    public override void Configure(EntityTypeBuilder<Room> builder)
     {
+        base.Configure(builder);
         builder.ToTable("Rooms");
-
-        builder.HasKey(r => r.Id);
 
         builder.Property(r => r.Capacity).IsRequired();
         builder.Property(r => r.Status).IsRequired().HasConversion<string>();
