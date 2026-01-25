@@ -2,7 +2,7 @@ namespace CoworkingManagement.Domain.Enums;
 
 public enum RoomStatus
 {
-    Free,
+    Available,
     Occupied,
     Reserved
 }

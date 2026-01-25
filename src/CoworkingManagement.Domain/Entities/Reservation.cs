@@ -28,7 +28,7 @@ public class Reservation: BaseEntity
         StartDate = startDate;
         EndDate = endDate;
     } 
-    public void Update(Guid? roomId, Guid? userId, DateTime? startDate, DateTime? endDate)
+    public void Update(Guid? roomId = null, ReservationStatus? status = null, DateTime? startDate = null, DateTime? endDate = null)
     {
 
         var startToValidate = startDate ?? this.StartDate;
@@ -40,17 +40,12 @@ public class Reservation: BaseEntity
         }
         if (roomId.HasValue)
             RoomId = roomId.Value;
-        if (userId.HasValue)
-            UserId = userId.Value;
+        if (status.HasValue)
+            Status = status.Value;
         if (startDate.HasValue)
             StartDate = startDate.Value;
         if (endDate.HasValue)
             EndDate = endDate.Value;
-    }
-
-    public void UpdateStatus(ReservationStatus status)
-    {
-        Status = status;
     }
 
     public void Cancel()

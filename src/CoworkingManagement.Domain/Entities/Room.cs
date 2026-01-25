@@ -10,17 +10,24 @@ public class Room: BaseEntity
     public RoomStatus Status { get; private set; }
     public ICollection<Reservation> Reservations { get; private set; } = new List<Reservation>();
 
-    public Room(int capacity, RoomStatus status, string location)
+    public Room(int capacity, string location)
     {
         Id = Guid.NewGuid();
         Capacity = capacity;
-        Status = status;
+        Status = RoomStatus.Available;
         Location = location;
     }
-    public void Update(int capacity, RoomStatus status, string location)
+    public void Update(int? capacity = null, RoomStatus? status = null, string? location = null)
     {
-        Capacity = capacity;
-        Status = status;
-        Location = location;
+        if (capacity.HasValue)
+            Capacity = capacity.Value;
+
+        if (status.HasValue)
+            Status = status.Value;
+
+        if (location != null) 
+        {
+            Location = location;
+        }
     }
 }

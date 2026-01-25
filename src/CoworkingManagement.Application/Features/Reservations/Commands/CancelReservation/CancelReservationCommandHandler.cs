@@ -7,7 +7,7 @@ namespace CoworkingManagement.Application.Features.Reservations.Commands.CancelR
 
 internal sealed class CancelReservationCommandHandler(IApplicationDbContext context): IRequestHandler<CancelReservationCommand, Unit>
 {
-    private readonly IApplicationDbContext _context = context;
+    private readonly IApplicationDbContext _context = context ?? throw new ArgumentNullException(nameof(context));
     public async Task<Unit> Handle(CancelReservationCommand command, CancellationToken cancellationToken)
     {
         var reservation = await _context.Reservations.FirstOrDefaultAsync(r => r.Id == command.ReservationId, cancellationToken);

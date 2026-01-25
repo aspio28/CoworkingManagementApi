@@ -7,4 +7,4 @@ public record CreateReservationCommand(
     Guid UserId,
     DateTime StartDate,
     DateTime EndDate
-): IRequest<Unit>;
+): IRequest<Guid>;

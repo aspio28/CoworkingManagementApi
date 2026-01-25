@@ -5,7 +5,6 @@ namespace CoworkingManagement.Application.Features.Reservations.Commands.UpdateR
 public record UpdateReservationCommand(
     Guid ReservationId,
     Guid? RoomId,
-    Guid? UserId,
     DateTime? StartDate,
     DateTime? EndDate
 ): IRequest<Unit>;

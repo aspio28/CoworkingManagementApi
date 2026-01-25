@@ -9,7 +9,7 @@ namespace CoworkingManagement.Application.Features.Reservations.Commands.UpdateR
 
 internal sealed class UpdateReservationCommandHandler(IApplicationDbContext context): IRequestHandler<UpdateReservationCommand, Unit>
 {
-    private readonly IApplicationDbContext _context = context;
+    private readonly IApplicationDbContext _context = context ?? throw new ArgumentNullException(nameof(context));
 
     public async Task<Unit> Handle(UpdateReservationCommand command, CancellationToken cancellationToken)
     {
@@ -31,10 +31,9 @@ internal sealed class UpdateReservationCommandHandler(IApplicationDbContext cont
         }
 
         reservation.Update(
-            command.RoomId,
-            command.UserId,
-            command.StartDate,
-            command.EndDate
+            roomId: command.RoomId,
+            startDate: command.StartDate,
+            endDate: command.EndDate
         );
 
         await _context.SaveChangesAsync(cancellationToken);

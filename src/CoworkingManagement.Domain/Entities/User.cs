@@ -8,8 +8,9 @@ public class User: BaseEntity
     public string Name { get; private set; } = string.Empty;
     public string LastName { get; private set; } = string.Empty;
     public string Email { get; private set; } = string.Empty;
+    public string Password { get; private set; } = string.Empty;
     public UserRole Role { get; private set; }
-    public ICollection<Reservation> Reservations { get; private set; } = new List<Reservation>();
+    public ICollection<Reservation> Reservations { get; private set; } = [];
 
     public User(string name, string lastName, string email, UserRole role)
     {
