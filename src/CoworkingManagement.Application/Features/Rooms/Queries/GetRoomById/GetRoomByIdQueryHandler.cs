@@ -31,7 +31,6 @@ internal sealed class GetRoomByIdQueryHandler : IRequestHandler<GetRoomByIdQuery
             Id = room.Id,
             Capacity = room.Capacity,
             Location = room.Location,
-            Status = room.Status.ToString()
         };
     }
 }

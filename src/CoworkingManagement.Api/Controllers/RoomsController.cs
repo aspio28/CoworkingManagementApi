@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoworkingManagement.Api.Controllers;
-[Authorize]
+// [Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class RoomsController(IMediator mediator) : ControllerBase
@@ -24,9 +24,9 @@ public class RoomsController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAllRooms()
+    public async Task<IActionResult> GetAllRooms([FromQuery] GetRoomsListQuery query)
     {
-        var getRoomListQueryResult = await _mediator.Send(new GetRoomsListQuery());
+        var getRoomListQueryResult = await _mediator.Send(query);
         return Ok(getRoomListQueryResult);
     }
 

@@ -5,11 +5,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CoworkingManagement.Infrastructure.Persistence;
 
-public class ApplicationDbContext : DbContext, IApplicationDbContext
+public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, ICurrentUserService _currentUserService) : DbContext(options), IApplicationDbContext
 {
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-    {
-    }
     public DbSet<User> Users { get; set; }
     public DbSet<Room> Rooms { get; set; }
     public DbSet<Reservation> Reservations { get; set; }
@@ -31,9 +28,11 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
             {
                 case EntityState.Added:
                     entityEntry.Entity.CreatedAt = DateTime.UtcNow;
+                    entityEntry.Entity.CreatedBy = _currentUserService.UserId;
                     break;
                 case EntityState.Modified:
-                    entityEntry.Entity.UpdatedAt = DateTime.UtcNow;
+                    entityEntry.Entity.LastModifiedAt = DateTime.UtcNow;
+                    entityEntry.Entity.LastModifiedBy = _currentUserService.UserId;
                     break;
             }
         }

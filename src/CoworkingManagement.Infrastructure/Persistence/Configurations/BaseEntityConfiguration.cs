@@ -11,6 +11,8 @@ public abstract class BaseEntityConfiguration<T> : IEntityTypeConfiguration<T>
     {
         builder.HasKey(e => e.Id);
         builder.Property(e => e.CreatedAt).IsRequired();
-        builder.Property(e => e.UpdatedAt).IsRequired(false);
+        builder.Property(e => e.LastModifiedAt).IsRequired(false);
+        builder.Property(e => e.CreatedBy).IsRequired(false);
+        builder.Property(e => e.LastModifiedBy).IsRequired(false);
     }
 }

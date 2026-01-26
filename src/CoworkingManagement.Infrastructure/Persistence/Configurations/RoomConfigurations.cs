@@ -14,7 +14,5 @@ public class RoomConfigurations : BaseEntityConfiguration<Room>
         builder.Property(r => r.Capacity).IsRequired();
 
         builder.Property(r => r.Location).IsRequired();
-        
-        builder.Property(r => r.Status).IsRequired().HasConversion<string>();
     }
 }

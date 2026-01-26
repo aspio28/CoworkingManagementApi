@@ -21,7 +21,7 @@ internal sealed class UpdateReservationCommandHandler(IApplicationDbContext cont
         }
 
         bool isRoomOccupied = await _context.Reservations.AnyAsync(r => r.RoomId == command.RoomId && 
-                        r.Status != ReservationStatus.Cancelled && 
+                        r.Status == ReservationStatus.Reserved && 
                         command.StartDate < r.EndDate && command.EndDate > r.StartDate,
                     cancellationToken);
 

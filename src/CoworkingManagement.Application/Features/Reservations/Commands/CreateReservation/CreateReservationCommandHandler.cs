@@ -16,11 +16,11 @@ internal sealed class CreateReservationCommandHandler(IApplicationDbContext cont
 
         var userId = _currentUserService.UserId;
 
-        if (string.IsNullOrEmpty(userId))
+        if (!userId.HasValue)
             throw new UnauthorizedException("Usuario no identificado");
 
         bool isRoomOccupied = await _context.Reservations.AnyAsync(r => r.RoomId == command.RoomId && 
-                        r.Status != ReservationStatus.Cancelled && 
+                        r.Status == ReservationStatus.Reserved && 
                         command.StartDate < r.EndDate && command.EndDate > r.StartDate,
                     cancellationToken);
 
@@ -28,9 +28,8 @@ internal sealed class CreateReservationCommandHandler(IApplicationDbContext cont
         {
             throw new BusinessException("Room is already booked for the selected time slot.");
         }
-        Reservation reservation = new Reservation
-        (
-            userId: Guid.Parse(userId),
+        Reservation reservation = new(
+            userId: userId.Value,
             roomId: command.RoomId,
             status: ReservationStatus.Reserved,
             startDate: command.StartDate,

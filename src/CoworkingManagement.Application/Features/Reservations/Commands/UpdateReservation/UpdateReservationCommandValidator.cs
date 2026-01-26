@@ -8,7 +8,7 @@ public class UpdateReservationCommandValidator: AbstractValidator<UpdateReservat
     public UpdateReservationCommandValidator()
     {
         RuleFor(x => x.ReservationId).NotEmpty().WithMessage("Reservation ID is required.");
-        RuleFor(x => x.StartDate).GreaterThanOrEqualTo(DateTime.UtcNow).WithMessage("Reservation date cannot be in the past.");
-        RuleFor(x => x.EndDate).GreaterThanOrEqualTo(x => x.StartDate).WithMessage("End date must be after start date.");
+        RuleFor(x => x.StartDate).GreaterThanOrEqualTo(DateTime.UtcNow).WithMessage("Reservation start date cannot be in the past.");
+        RuleFor(x => x.EndDate).GreaterThanOrEqualTo(DateTime.UtcNow).WithMessage("Reservation end date cannot be in the past.");
     }
 }

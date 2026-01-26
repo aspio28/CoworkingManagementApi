@@ -32,7 +32,7 @@ public class ReservationConfigurations : BaseEntityConfiguration<Reservation>
         .IsRequired()
         .HasDefaultValueSql("CURRENT_TIMESTAMP"); 
 
-        builder.Property(r => r.UpdatedAt)
-            .IsRequired(false);
+        builder.Property(r => r.CreatedBy)
+            .IsRequired(true);
     }
 }
