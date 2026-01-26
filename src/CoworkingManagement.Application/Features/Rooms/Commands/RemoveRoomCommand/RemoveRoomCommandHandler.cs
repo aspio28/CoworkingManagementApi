@@ -1,4 +1,5 @@
 using CoworkingManagement.Application.Common.Interfaces;
+using CoworkingManagement.Domain.Enums;
 using CoworkingManagement.Domain.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -23,12 +24,18 @@ internal sealed class RemoveRoomCommandHandler: IRequestHandler<RemoveRoomComman
             throw new NotFoundException(nameof(room), command.RoomId);
         }
 
-        if (room.Reservations.Any(r => r.Status != Domain.Enums.ReservationStatus.Cancelled && r.EndDate >= DateTime.UtcNow))
+        var hasActiveReservations = await _context.Reservations
+                                        .AnyAsync(r => r.RoomId == command.RoomId && 
+                                        r.Status == ReservationStatus.Reserved && 
+                                        r.EndDate >= DateTime.UtcNow, cancellationToken: cancellationToken);
+
+        if (hasActiveReservations)
         {
             throw new BusinessException("Cannot remove a room with active or upcoming reservations.");
         }
 
-        _context.Rooms.Remove(room);
+        room.Delete();
+        
         await _context.SaveChangesAsync(cancellationToken);
 
         return Unit.Value;

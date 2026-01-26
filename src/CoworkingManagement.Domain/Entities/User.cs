@@ -29,4 +29,9 @@ public class User: BaseEntity
         Email = email;
         Role = role;
     }
+
+    public void UpdateRole(UserRole role)
+    {
+        Role = role;
+    }
 }

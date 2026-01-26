@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoworkingManagement.Api.Controllers;
-// [Authorize]
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class ReservationsController(IMediator mediator) : ControllerBase

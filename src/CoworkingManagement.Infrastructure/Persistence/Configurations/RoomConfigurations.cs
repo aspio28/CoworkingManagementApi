@@ -14,5 +14,9 @@ public class RoomConfigurations : BaseEntityConfiguration<Room>
         builder.Property(r => r.Capacity).IsRequired();
 
         builder.Property(r => r.Location).IsRequired();
+
+        builder.Property(r => r.IsDeleted).IsRequired();
+
+        builder.HasQueryFilter(r => !r.IsDeleted);
     }
 }

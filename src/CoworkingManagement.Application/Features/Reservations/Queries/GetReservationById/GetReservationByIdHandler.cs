@@ -33,7 +33,12 @@ internal sealed class GetReservationByIdHandler : IRequestHandler<GetReservation
             UserId = reservation.UserId,
             StartDate = reservation.StartDate,
             EndDate = reservation.EndDate,
-            Status = reservation.Status
+            Status = reservation.Status,
+            CreatedAt = reservation.CreatedAt, 
+            CreatedBy = reservation.CreatedBy, 
+            LastModifiedAt = reservation.LastModifiedAt, 
+            LastModifiedBy = reservation.LastModifiedBy,
+            CanceledAt = reservation.CancelledAt,
         };
     }
 }

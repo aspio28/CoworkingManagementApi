@@ -7,6 +7,7 @@ public class Room: BaseEntity
     public int Capacity { get; private set; }
     public string Location { get; private set; } = string.Empty;
     public ICollection<Reservation> Reservations { get; private set; } = [];
+    public bool IsDeleted { get; private set; } = false;
 
     public Room(int capacity, string location)
     {
@@ -23,5 +24,9 @@ public class Room: BaseEntity
         {
             Location = location;
         }
+    }
+    public void Delete()
+    {
+        IsDeleted = true;
     }
 }

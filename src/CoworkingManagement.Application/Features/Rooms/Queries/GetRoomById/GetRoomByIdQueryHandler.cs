@@ -31,6 +31,10 @@ internal sealed class GetRoomByIdQueryHandler : IRequestHandler<GetRoomByIdQuery
             Id = room.Id,
             Capacity = room.Capacity,
             Location = room.Location,
+            CreatedAt = room.CreatedAt, 
+            CreatedBy = room.CreatedBy, 
+            LastModifiedAt = room.LastModifiedAt, 
+            LastModifiedBy = room.LastModifiedBy
         };
     }
 }

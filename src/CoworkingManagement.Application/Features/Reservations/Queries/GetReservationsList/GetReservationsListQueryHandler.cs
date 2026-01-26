@@ -27,11 +27,16 @@ internal sealed class GetReservationsListQueryHandler(IApplicationDbContext cont
             .Select(r => new ReservationDto 
             { 
                 Id = r.Id, 
-                RoomId = r.Id, 
+                RoomId = r.RoomId, 
                 UserId = r.UserId, 
                 StartDate = r.StartDate,
                 EndDate = r.EndDate,
-                Status = r.Status
+                Status = r.Status,
+                CreatedAt = r.CreatedAt, 
+                CreatedBy = r.CreatedBy, 
+                LastModifiedAt = r.LastModifiedAt, 
+                LastModifiedBy = r.LastModifiedBy,
+                CanceledAt = r.CancelledAt,
             })
             .ToListAsync(cancellationToken);
         

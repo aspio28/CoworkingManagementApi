@@ -46,7 +46,15 @@ internal sealed class GetRoomsListHandler : IRequestHandler<GetRoomsListQuery, P
         var items = await query
             .Skip((request.PageNumber - 1) * request.PageSize)
             .Take(request.PageSize)
-            .Select(r => new RoomDto { Id = r.Id, Capacity = r.Capacity, Location = r.Location})
+            .Select(r => new RoomDto { 
+                Id = r.Id, 
+                Capacity = r.Capacity, 
+                Location = r.Location, 
+                CreatedAt = r.CreatedAt, 
+                CreatedBy = r.CreatedBy, 
+                LastModifiedAt = r.LastModifiedAt, 
+                LastModifiedBy = r.LastModifiedBy
+            })
             .ToListAsync(cancellationToken);
 
         return new PaginatedList<RoomDto>(items, count, request.PageNumber, request.PageSize);

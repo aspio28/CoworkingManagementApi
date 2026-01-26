@@ -1,8 +1,7 @@
 namespace CoworkingManagement.Application.Common.Models;
 
-public record RoomDto
+public record RoomDto : BaseEntityDto
 {
-    public Guid Id { get; init; }
     public int Capacity { get; init; }
     public string Location { get; init; } = string.Empty;
 }

@@ -1,17 +1,17 @@
 using CoworkingManagement.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CoworkingManagement.Infrastructure.Extensions;
 
-public static class MigrationExtensions
+public static class InitialiserExtensions
 {
-    public static void ApplyMigrations(this IApplicationBuilder app)
+    public static async Task InitialiseDatabaseAsync(this IApplicationBuilder app)
     {
         using var scope = app.ApplicationServices.CreateScope();
-        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-        context.Database.Migrate();
+        var initialiser = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitialiser>();
+
+        await initialiser.SeedAsync();
     }
 }
