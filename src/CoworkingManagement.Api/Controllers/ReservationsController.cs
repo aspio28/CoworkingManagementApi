@@ -5,10 +5,11 @@ using CoworkingManagement.Application.Features.Reservations.Commands.UpdateReser
 using CoworkingManagement.Application.Features.Reservations.Queries.GetReservationById;
 using CoworkingManagement.Application.Features.Reservations.Queries.GetReservationsList;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoworkingManagement.Api.Controllers;
-
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class ReservationsController(IMediator mediator) : ControllerBase

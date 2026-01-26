@@ -5,10 +5,11 @@ using CoworkingManagement.Application.Features.Rooms.Commands.UpdateRoomCommand;
 using CoworkingManagement.Application.Features.Rooms.Queries.GetRoomById;
 using CoworkingManagement.Application.Features.Rooms.Queries.GetRoomsList;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoworkingManagement.Api.Controllers;
-
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class RoomsController(IMediator mediator) : ControllerBase
@@ -29,6 +30,7 @@ public class RoomsController(IMediator mediator) : ControllerBase
         return Ok(getRoomListQueryResult);
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateRoomCommand command)
     {
@@ -36,6 +38,7 @@ public class RoomsController(IMediator mediator) : ControllerBase
         return CreatedAtAction(nameof(GetRoomById), new { id = createRoomResult }, createRoomResult);
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPut("{id:guid}")]
     public async Task<IActionResult> Update(Guid id, [FromBody] UpdateRoomRequest request)
     {
@@ -49,6 +52,7 @@ public class RoomsController(IMediator mediator) : ControllerBase
         return NoContent();
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> Delete(Guid id)
     {

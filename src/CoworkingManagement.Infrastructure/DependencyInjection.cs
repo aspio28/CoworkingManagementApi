@@ -2,6 +2,7 @@ using System.Text;
 using CoworkingManagement.Application.Common.Interfaces;
 using CoworkingManagement.Infrastructure.Auth;
 using CoworkingManagement.Infrastructure.Persistence;
+using CoworkingManagement.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -39,9 +40,12 @@ public static class DependencyInjection
             };
         });
         
+        services.AddHttpContextAccessor();
+
         services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
         services.AddScoped<IPasswordHasher, PasswordHasher>();
         services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+        services.AddScoped<ICurrentUserService, CurrentUserService>();
 
         return services;
     }

@@ -7,11 +7,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CoworkingManagement.Application.Features.Reservations.Commands.CreateReservation;
 
-internal sealed class CreateReservationCommandHandler(IApplicationDbContext context): IRequestHandler<CreateReservationCommand, Guid>
+internal sealed class CreateReservationCommandHandler(IApplicationDbContext context, ICurrentUserService currentUserService): IRequestHandler<CreateReservationCommand, Guid>
 {
     private readonly IApplicationDbContext _context = context ?? throw new ArgumentNullException(nameof(context));
+    private readonly ICurrentUserService _currentUserService = currentUserService ?? throw new ArgumentNullException(nameof(currentUserService));
     public async Task<Guid> Handle(CreateReservationCommand command, CancellationToken cancellationToken)
     {
+
+        var userId = _currentUserService.UserId;
+
+        if (string.IsNullOrEmpty(userId))
+            throw new UnauthorizedException("Usuario no identificado");
 
         bool isRoomOccupied = await _context.Reservations.AnyAsync(r => r.RoomId == command.RoomId && 
                         r.Status != ReservationStatus.Cancelled && 
@@ -24,11 +30,11 @@ internal sealed class CreateReservationCommandHandler(IApplicationDbContext cont
         }
         Reservation reservation = new Reservation
         (
-            command.RoomId,
-            command.UserId,
-            ReservationStatus.Reserved,
-            command.StartDate,
-            command.EndDate
+            userId: Guid.Parse(userId),
+            roomId: command.RoomId,
+            status: ReservationStatus.Reserved,
+            startDate: command.StartDate,
+            endDate: command.EndDate
         );
         _context.Reservations.Add(reservation);
         await _context.SaveChangesAsync(cancellationToken);
