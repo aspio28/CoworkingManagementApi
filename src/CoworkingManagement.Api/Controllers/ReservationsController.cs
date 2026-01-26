@@ -11,14 +11,9 @@ namespace CoworkingManagement.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class ReservationsController : ControllerBase
+public class ReservationsController(IMediator mediator) : ControllerBase
 {
-    private readonly IMediator _mediator;
-
-    public ReservationsController(IMediator mediator)
-    {
-        _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
-    }
+    private readonly IMediator _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
 
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetById(Guid id)

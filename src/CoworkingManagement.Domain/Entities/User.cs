@@ -12,13 +12,14 @@ public class User: BaseEntity
     public UserRole Role { get; private set; }
     public ICollection<Reservation> Reservations { get; private set; } = [];
 
-    public User(string name, string lastName, string email, UserRole role)
+    public User(string name, string lastName, string email, string password)
     {
         Id = Guid.NewGuid();
         Name = name;
         LastName = lastName;
         Email = email;
-        Role = role;
+        Password = password;
+        Role = UserRole.Member;
     }
 
     public void Update(string name, string lastName, string email, UserRole role)
