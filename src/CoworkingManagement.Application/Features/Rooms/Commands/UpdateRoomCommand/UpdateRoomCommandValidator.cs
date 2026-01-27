@@ -1,3 +1,4 @@
+using CoworkingManagement.Application.Common.Extensions;
 using FluentValidation;
 
 namespace CoworkingManagement.Application.Features.Rooms.Commands.UpdateRoomCommand;
@@ -11,9 +12,6 @@ public class UpdateRoomCommandValidator : AbstractValidator<UpdateRoomCommand>
             .GreaterThan(0)
             .When(x => x.Capacity.HasValue)
             .WithMessage("Capacity must be greater than zero.");
-        When(x => x.Location != null, () =>
-        {
-            RuleFor(x => x.Location).NotEmpty().WithMessage("Location cannot be empty.");
-        });
+        RuleFor(x => x.Location).NotContainHtml("Location");
     }
 }
