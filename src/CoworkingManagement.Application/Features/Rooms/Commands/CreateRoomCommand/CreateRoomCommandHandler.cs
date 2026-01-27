@@ -4,14 +4,12 @@ using MediatR;
 
 namespace CoworkingManagement.Application.Features.Rooms.Commands.CreateRoomCommand;
 
-internal sealed class CreateRoomCommandHandler : IRequestHandler<CreateRoomCommand, Guid>
+internal sealed class CreateRoomCommandHandler(IApplicationDbContext context, ICacheService cache) : IRequestHandler<CreateRoomCommand, Guid>
 {
-    private readonly IApplicationDbContext _context;
+    private readonly IApplicationDbContext _context = context ?? throw new ArgumentNullException(nameof(context));
+    private readonly ICacheService _cache = cache ?? throw new ArgumentNullException(nameof(cache));
 
-    public CreateRoomCommandHandler(IApplicationDbContext context)
-    {
-        _context = context ?? throw new ArgumentNullException(nameof(context));
-    }
+
     public async Task<Guid> Handle(CreateRoomCommand request, CancellationToken cancellationToken)
     {
         var room = new Room(request.Capacity, request.Location);
@@ -19,6 +17,7 @@ internal sealed class CreateRoomCommandHandler : IRequestHandler<CreateRoomComma
         await _context.Rooms.AddAsync(room, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
 
+        _cache.Invalidate("Rooms");
         return room.Id;
     }
 }

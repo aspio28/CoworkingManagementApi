@@ -12,7 +12,7 @@ internal sealed class GetReservationsListQueryHandler(IApplicationDbContext cont
 
     public async Task<PaginatedList<ReservationDto>> Handle(GetReservationsListQuery request, CancellationToken cancellationToken)
     {
-        var query = _context.Reservations.AsQueryable();
+        var query = _context.Reservations.AsNoTracking();
 
         if(request.OnlyActive)
         {

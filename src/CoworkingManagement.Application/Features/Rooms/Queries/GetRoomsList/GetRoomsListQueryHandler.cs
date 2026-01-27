@@ -6,18 +6,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CoworkingManagement.Application.Features.Rooms.Queries.GetRoomsList;
 
-internal sealed class GetRoomsListHandler : IRequestHandler<GetRoomsListQuery, PaginatedList<RoomDto>>
+internal sealed class GetRoomsListHandler(IApplicationDbContext context) : IRequestHandler<GetRoomsListQuery, PaginatedList<RoomDto>>
 {
-    private readonly IApplicationDbContext _context;
-
-    public GetRoomsListHandler(IApplicationDbContext context)
-    {
-        _context = context ?? throw new ArgumentNullException(nameof(context));
-    }
+    private readonly IApplicationDbContext _context = context ?? throw new ArgumentNullException(nameof(context));
 
     public async Task<PaginatedList<RoomDto>> Handle(GetRoomsListQuery request, CancellationToken cancellationToken)
     {
-        var query = _context.Rooms.AsQueryable();
+        var query = _context.Rooms.AsNoTracking();
 
         if (!string.IsNullOrWhiteSpace(request.SearchTerm))
         {

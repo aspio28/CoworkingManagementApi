@@ -5,14 +5,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CoworkingManagement.Application.Features.Rooms.Commands.UpdateRoomCommand;
 
-internal sealed class UpdateRoomCommandHandler: IRequestHandler<UpdateRoomCommand, Unit>
+internal sealed class UpdateRoomCommandHandler(IApplicationDbContext context, ICacheService cache) : IRequestHandler<UpdateRoomCommand, Unit>
 {
-    private readonly IApplicationDbContext _context;
-
-    public UpdateRoomCommandHandler(IApplicationDbContext context)
-    {
-        _context = context ?? throw new ArgumentNullException(nameof(context));
-    }
+    private readonly IApplicationDbContext _context = context ?? throw new ArgumentNullException(nameof(context));
+    private readonly ICacheService _cache = cache ?? throw new ArgumentNullException(nameof(cache));
 
     public async Task<Unit> Handle(UpdateRoomCommand command, CancellationToken cancellationToken)
     {
@@ -36,6 +32,7 @@ internal sealed class UpdateRoomCommandHandler: IRequestHandler<UpdateRoomComman
         _context.Rooms.Update(room);
         await _context.SaveChangesAsync(cancellationToken);
 
+        _cache.Invalidate("Rooms");
         return Unit.Value;
     }
 }

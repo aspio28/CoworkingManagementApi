@@ -16,7 +16,7 @@ internal sealed class GetRoomsListHandler : IRequestHandler<GetUserListQuery, Pa
 
     public async Task<PaginatedList<UserDto>> Handle(GetUserListQuery request, CancellationToken cancellationToken)
     {
-        var query = _context.Users.AsQueryable();
+        var query = _context.Users.AsNoTracking();
 
         var count = await query.CountAsync(cancellationToken);
 

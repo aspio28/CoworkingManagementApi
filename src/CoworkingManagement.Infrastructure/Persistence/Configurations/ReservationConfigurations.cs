@@ -1,4 +1,5 @@
 using CoworkingManagement.Domain.Entities;
+using CoworkingManagement.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -36,5 +37,11 @@ public class ReservationConfigurations : BaseEntityConfiguration<Reservation>
             .IsRequired(true);
         
         builder.HasQueryFilter(res => !res.Room.IsDeleted);
+
+        builder
+            .HasIndex(r => new { r.RoomId, r.StartDate, r.EndDate })
+            .HasMethod("gist")
+            .HasFilter($"\"status\" = '{ReservationStatus.Reserved}'")
+            .HasDatabaseName("IX_Reservations_Availability_Lookup");
     }
 }

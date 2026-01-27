@@ -7,9 +7,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CoworkingManagement.Application.Features.Reservations.Commands.UpdateReservation;
 
-internal sealed class UpdateReservationCommandHandler(IApplicationDbContext context): IRequestHandler<UpdateReservationCommand, Unit>
+internal sealed class UpdateReservationCommandHandler(IApplicationDbContext context, ICacheService cache): IRequestHandler<UpdateReservationCommand, Unit>
 {
     private readonly IApplicationDbContext _context = context ?? throw new ArgumentNullException(nameof(context));
+    private readonly ICacheService _cache = cache ?? throw new ArgumentNullException(nameof(cache));
 
     public async Task<Unit> Handle(UpdateReservationCommand command, CancellationToken cancellationToken)
     {
@@ -37,6 +38,9 @@ internal sealed class UpdateReservationCommandHandler(IApplicationDbContext cont
         );
 
         await _context.SaveChangesAsync(cancellationToken);
+
+        _cache.Invalidate("Reservations");
+        _cache.Invalidate("Rooms");
         return Unit.Value;
     }
 }

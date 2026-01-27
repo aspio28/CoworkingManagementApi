@@ -6,14 +6,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CoworkingManagement.Application.Features.Rooms.Commands.RemoveRoomCommand;
 
-internal sealed class RemoveRoomCommandHandler: IRequestHandler<RemoveRoomCommand, Unit>
+internal sealed class RemoveRoomCommandHandler(IApplicationDbContext context, ICacheService cache) : IRequestHandler<RemoveRoomCommand, Unit>
 {
-    private readonly IApplicationDbContext _context;
-
-    public RemoveRoomCommandHandler(IApplicationDbContext context)
-    {
-        _context = context ?? throw new ArgumentNullException(nameof(context));
-    }
+    private readonly IApplicationDbContext _context = context ?? throw new ArgumentNullException(nameof(context));
+    private readonly ICacheService _cache = cache ?? throw new ArgumentNullException(nameof(cache));
 
     public async Task<Unit> Handle(RemoveRoomCommand command, CancellationToken cancellationToken)
     {
@@ -38,6 +34,7 @@ internal sealed class RemoveRoomCommandHandler: IRequestHandler<RemoveRoomComman
         
         await _context.SaveChangesAsync(cancellationToken);
 
+        _cache.Invalidate("Rooms");
         return Unit.Value;
     }
 }

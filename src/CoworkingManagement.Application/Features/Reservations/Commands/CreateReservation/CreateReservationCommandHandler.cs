@@ -7,10 +7,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CoworkingManagement.Application.Features.Reservations.Commands.CreateReservation;
 
-internal sealed class CreateReservationCommandHandler(IApplicationDbContext context, ICurrentUserService currentUserService): IRequestHandler<CreateReservationCommand, Guid>
+internal sealed class CreateReservationCommandHandler(IApplicationDbContext context, ICurrentUserService currentUserService, ICacheService cache): IRequestHandler<CreateReservationCommand, Guid>
 {
     private readonly IApplicationDbContext _context = context ?? throw new ArgumentNullException(nameof(context));
     private readonly ICurrentUserService _currentUserService = currentUserService ?? throw new ArgumentNullException(nameof(currentUserService));
+    private readonly ICacheService _cache = cache ?? throw new ArgumentNullException(nameof(cache));
     public async Task<Guid> Handle(CreateReservationCommand command, CancellationToken cancellationToken)
     {
 
@@ -38,6 +39,8 @@ internal sealed class CreateReservationCommandHandler(IApplicationDbContext cont
         _context.Reservations.Add(reservation);
         await _context.SaveChangesAsync(cancellationToken);
 
+        _cache.Invalidate("Reservations");
+        _cache.Invalidate("Rooms");
         return reservation.Id;
     }
 }

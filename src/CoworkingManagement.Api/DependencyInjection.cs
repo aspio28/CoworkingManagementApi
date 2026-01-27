@@ -1,5 +1,7 @@
 using System.Text.Json.Serialization;
+using CoworkingManagement.Application.Common.Interfaces;
 using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace CoworkingManagement;
 
@@ -36,8 +38,28 @@ public static class DependencyInjection
                     Array.Empty<string>()
                 }
             });
+
+            c.OperationFilter<IgnoreCachePropertiesFilter>();
         });
 
         return services;
+    }
+
+    public class IgnoreCachePropertiesFilter : IOperationFilter
+    {
+        public void Apply(OpenApiOperation operation, OperationFilterContext context)
+        {
+            var cacheProps = typeof(ICacheableQuery).GetProperties().Select(p => p.Name);
+            
+            // Eliminamos los parámetros de la operación en Swagger que coincidan con la interfaz
+            var parametersToRemove = operation.Parameters
+                .Where(p => cacheProps.Any(cp => string.Equals(cp, p.Name, StringComparison.OrdinalIgnoreCase)))
+                .ToList();
+
+            foreach (var parameter in parametersToRemove)
+            {
+                operation.Parameters.Remove(parameter);
+            }
+        }
     }
 }

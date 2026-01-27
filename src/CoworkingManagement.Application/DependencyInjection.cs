@@ -1,5 +1,6 @@
 using System.Reflection;
 using CoworkingManagement.Application.Common.Behaviors;
+using CoworkingManagement.Application.Common.Behavious;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,6 +16,7 @@ public static class DependencyInjection
         services.AddMediatR(cfg => {
             cfg.RegisterServicesFromAssembly(assembly);
 
+            cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(CachingBehavior<,>));
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
             });
             
