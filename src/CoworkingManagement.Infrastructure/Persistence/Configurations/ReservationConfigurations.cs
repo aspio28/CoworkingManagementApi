@@ -34,5 +34,7 @@ public class ReservationConfigurations : BaseEntityConfiguration<Reservation>
 
         builder.Property(r => r.CreatedBy)
             .IsRequired(true);
+        
+        builder.HasQueryFilter(res => !res.Room.IsDeleted);
     }
 }
