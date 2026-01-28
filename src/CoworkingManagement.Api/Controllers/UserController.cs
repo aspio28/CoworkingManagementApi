@@ -1,5 +1,6 @@
 using CoworkingManagement.Application.Features.Users.Commands.GetUserList;
 using CoworkingManagement.Application.Features.Users.Commands.UpdateUserRole;
+using CoworkingManagement.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,9 +22,11 @@ public class UserController(IMediator mediator) : ControllerBase
         return Ok(getUserListQueryResult);
     }
 
-    [HttpPatch]
-    public async Task<IActionResult> UpdateUserRole([FromBody] UpdateUserRoleCommand command)
+    [HttpPatch("{id:guid}")]
+    public async Task<IActionResult> UpdateUserRole(System.Guid id, [FromBody] UserRole role)
     {
+        var command = new UpdateUserRoleCommand(id, role);
+        
         await _mediator.Send(command);
 
         return NoContent();
