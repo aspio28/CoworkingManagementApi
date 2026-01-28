@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using CoworkingManagement.Api.Models.Reservations;
 using CoworkingManagement.Application.Features.Reservations.Commands.CancelReservation;
 using CoworkingManagement.Application.Features.Reservations.Commands.CreateReservation;
@@ -27,7 +28,11 @@ public class ReservationsController(IMediator mediator) : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAllReservations([FromQuery] GetReservationsListQuery query)
     {
-        var getAllReservationsQueryResult = await _mediator.Send(query);
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        
+        if (string.IsNullOrEmpty(userId)) return Unauthorized();
+        
+        var getAllReservationsQueryResult = await _mediator.Send(query with { UserId = Guid.Parse(userId) });
         return Ok(getAllReservationsQueryResult);
     }
 

@@ -12,7 +12,10 @@ public record GetReservationsListQuery(
 ) : IRequest<PaginatedList<ReservationDto>>, ICacheableQuery
 {
     [JsonIgnore]
-    public string CacheKey => $"GetReservations_{PageNumber}_{PageSize}_{OnlyActive}";
+    public Guid UserId { get; init; }
+
+    [JsonIgnore]
+    public string CacheKey => $"GetReservations{UserId}_{PageNumber}_{PageSize}_{OnlyActive}";
     
     [JsonIgnore]
     public string CacheTag => "Reservations";
