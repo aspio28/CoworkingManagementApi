@@ -59,7 +59,14 @@ The project follows a Clean Architecture approach to separate different responsi
 
 * **Dependency Injection**: Classes should not create the objects they need; instead, they should receive them from the outside.
 
-### 3. Security & Authentication
+### 3. Cross-Cutting Concerns
+
+#### Pipelines Behavior de MediatR
+
+* **ValidationBehavior**: Automatically executes FluentValidation validators to validate the objects (commands and queries) that reach the handler.
+* **CachingBehavior**: Responsible for storing query data in the cache using the keys defined for each query.
+
+### 4. Security & Authentication
 * **JWT Bearer Token:** The API is secured using JSON Web Tokens.
 * **Role-Based Access Control (RBAC):** Access to specific endpoints (like managing coworking rooms) is restricted based on user roles (`Admin`, `Member`).
 
