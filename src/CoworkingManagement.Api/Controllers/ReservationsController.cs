@@ -16,6 +16,7 @@ public class ReservationsController(IMediator mediator) : ControllerBase
 {
     private readonly IMediator _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
 
+    [Authorize(Roles = "Admin")]
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetById(Guid id)
     {

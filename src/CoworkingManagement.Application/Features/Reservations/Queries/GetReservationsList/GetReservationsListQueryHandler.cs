@@ -6,13 +6,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CoworkingManagement.Application.Features.Reservations.Queries.GetReservationsList;
 
-internal sealed class GetReservationsListQueryHandler(IApplicationDbContext context) : IRequestHandler<GetReservationsListQuery, PaginatedList<ReservationDto>>
+internal sealed class GetReservationsListQueryHandler(IApplicationDbContext context, ICurrentUserService currentUserService) : IRequestHandler<GetReservationsListQuery, PaginatedList<ReservationDto>>
 {
     private readonly IApplicationDbContext _context = context ?? throw new ArgumentNullException(nameof(context));
 
+    private readonly ICurrentUserService _currentUserService = currentUserService ?? throw new ArgumentNullException(nameof(currentUserService));
+
     public async Task<PaginatedList<ReservationDto>> Handle(GetReservationsListQuery request, CancellationToken cancellationToken)
     {
-        var query = _context.Reservations.AsNoTracking();
+        var query = _context.Reservations.AsNoTracking().Where(r => r.UserId == _currentUserService.UserId);
 
         if(request.OnlyActive)
         {

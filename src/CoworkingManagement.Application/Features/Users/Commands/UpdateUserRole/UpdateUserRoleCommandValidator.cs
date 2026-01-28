@@ -7,6 +7,6 @@ public class UpdateUserRoleCommandValidtor : AbstractValidator<UpdateUserRoleCom
     public UpdateUserRoleCommandValidtor()
     {
         RuleFor(x => x.Id).NotEmpty().WithMessage("Id is required");
-        RuleFor(x => x.Role).NotEmpty().WithMessage("Role is required");
+        RuleFor(x => x.Role).NotNull().IsInEnum().WithMessage("Role is required");
     }
 }
