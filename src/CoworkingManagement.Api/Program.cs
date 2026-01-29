@@ -3,7 +3,6 @@ using CoworkingManagement.Api.Middleware;
 using CoworkingManagement.Application;
 using CoworkingManagement.Infrastructure;
 using CoworkingManagement.Infrastructure.Extensions;
-using CoworkingManagement.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,3 +29,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+public partial class Program { }
