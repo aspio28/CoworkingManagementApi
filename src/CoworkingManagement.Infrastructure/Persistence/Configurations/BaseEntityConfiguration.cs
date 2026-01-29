@@ -10,7 +10,9 @@ public abstract class BaseEntityConfiguration<T> : IEntityTypeConfiguration<T>
     public virtual void Configure(EntityTypeBuilder<T> builder)
     {
         builder.HasKey(e => e.Id);
-        builder.Property(e => e.CreatedAt).IsRequired();
+        builder.Property(r => r.CreatedAt)
+            .IsRequired()
+            .HasDefaultValueSql("CURRENT_TIMESTAMP"); 
         builder.Property(e => e.LastModifiedAt).IsRequired(false);
         builder.Property(e => e.CreatedBy).IsRequired(false);
         builder.Property(e => e.LastModifiedBy).IsRequired(false);

@@ -28,13 +28,6 @@ public class ReservationConfigurations : BaseEntityConfiguration<Reservation>
 
         builder.Property(r => r.StartDate).IsRequired();
         builder.Property(r => r.EndDate).IsRequired();
-
-        builder.Property(r => r.CreatedAt)
-            .IsRequired()
-            .HasDefaultValueSql("CURRENT_TIMESTAMP"); 
-
-        builder.Property(r => r.CreatedBy)
-            .IsRequired(true);
         
         builder.HasQueryFilter(res => !res.Room.IsDeleted);
 
