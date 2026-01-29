@@ -8,6 +8,7 @@ Follow these steps to set up the development environment and run the system loca
 
 * **.NET 8.0 SDK** (or higher)
 * **PostgreSQL** (Running locally on port 5432)
+* **Docker** (For tests)
 * **EF Core Global Tool**:
   ```bash
     dotnet tool install --global dotnet-ef
