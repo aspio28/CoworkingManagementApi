@@ -23,7 +23,8 @@ public class ApiWebApplicationFactory
                 options.DefaultChallengeScheme = TestAuthHandler.AuthenticationScheme;
             })
             .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>(
-            TestAuthHandler.AuthenticationScheme, options => { });
+                TestAuthHandler.AuthenticationScheme, options => { }
+            );
 
             var descriptor = services.SingleOrDefault(
                 d => d.ServiceType == typeof(DbContextOptions<ApplicationDbContext>));

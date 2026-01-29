@@ -19,6 +19,7 @@ internal sealed class GetReservationByIdHandler : IRequestHandler<GetReservation
     {
         var reservation = await _context.Reservations
             .AsNoTracking()
+            .Include(r => r.Room)
             .FirstOrDefaultAsync(r => r.Id == request.Id, cancellationToken);
 
         if (reservation == null)
@@ -34,6 +35,8 @@ internal sealed class GetReservationByIdHandler : IRequestHandler<GetReservation
             StartDate = reservation.StartDate,
             EndDate = reservation.EndDate,
             Status = reservation.Status,
+            RoomCapacity = reservation.Room.Capacity,
+            RoomLocation = reservation.Room.Location,
             CreatedAt = reservation.CreatedAt, 
             CreatedBy = reservation.CreatedBy, 
             LastModifiedAt = reservation.LastModifiedAt, 

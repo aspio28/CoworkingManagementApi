@@ -26,6 +26,7 @@ internal sealed class GetReservationsListQueryHandler(IApplicationDbContext cont
         var items = await query
             .Skip((request.PageNumber - 1) * request.PageSize)
             .Take(request.PageSize)
+            .Include(r => r.Room)
             .Select(r => new ReservationDto 
             { 
                 Id = r.Id, 
@@ -34,6 +35,8 @@ internal sealed class GetReservationsListQueryHandler(IApplicationDbContext cont
                 StartDate = r.StartDate,
                 EndDate = r.EndDate,
                 Status = r.Status,
+                RoomCapacity = r.Room.Capacity,
+                RoomLocation = r.Room.Location,
                 CreatedAt = r.CreatedAt, 
                 CreatedBy = r.CreatedBy, 
                 LastModifiedAt = r.LastModifiedAt, 

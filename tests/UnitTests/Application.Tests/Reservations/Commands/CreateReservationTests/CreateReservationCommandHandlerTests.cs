@@ -25,7 +25,7 @@ public class CreateReservationCommandHandlerTests
     }
 
     [Fact]
-    public async Task Handle_Should_ReturnFailure_When_Room_Is_Already_Reserved()
+    public async Task Handle_Should_Return_Failure_When_Room_Is_Already_Reserved()
     {
         var command = GetValidCommand();
 
