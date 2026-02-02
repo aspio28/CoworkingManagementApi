@@ -1,3 +1,5 @@
+using CoworkingManagement.Application.Common.Interfaces;
+
 namespace CoworkingManagement.IntegrationsTests.Fixtures;
 
 [CollectionDefinition("Integration tests")]

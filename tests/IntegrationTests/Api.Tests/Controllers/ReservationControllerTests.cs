@@ -2,7 +2,6 @@ using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using CoworkingManagement.Domain.Entities;
-using CoworkingManagement.Domain.Enums;
 using CoworkingManagement.Infrastructure.Persistence;
 using CoworkingManagement.IntegrationsTests.Fixtures;
 using FluentAssertions;
