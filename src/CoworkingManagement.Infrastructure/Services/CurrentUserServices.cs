@@ -21,4 +21,7 @@ public class CurrentUserService : ICurrentUserService
             return Guid.TryParse(id, out var parseGuid) ? parseGuid : null;
         }
     }
+    public string? Email =>
+        _httpContextAccessor.HttpContext?
+            .User.FindFirstValue(ClaimTypes.Email);
 }

@@ -1,4 +1,5 @@
 using CoworkingManagement.Application.Common.Interfaces;
+using CoworkingManagement.Application.Features.Reservations.Events.ReservationConfirmed;
 using CoworkingManagement.Domain.Entities;
 using CoworkingManagement.Domain.Enums;
 using CoworkingManagement.Domain.Exceptions;
@@ -7,15 +8,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CoworkingManagement.Application.Features.Reservations.Commands.CreateReservation;
 
-internal sealed class CreateReservationCommandHandler(IApplicationDbContext context, ICurrentUserService currentUserService, ICacheService cache): IRequestHandler<CreateReservationCommand, Guid>
+internal sealed class CreateReservationCommandHandler(IApplicationDbContext context, ICurrentUserService currentUserService, ICacheService cache, IMediator mediator): IRequestHandler<CreateReservationCommand, Guid>
 {
     private readonly IApplicationDbContext _context = context ?? throw new ArgumentNullException(nameof(context));
     private readonly ICurrentUserService _currentUserService = currentUserService ?? throw new ArgumentNullException(nameof(currentUserService));
     private readonly ICacheService _cache = cache ?? throw new ArgumentNullException(nameof(cache));
+    private readonly IMediator _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
     public async Task<Guid> Handle(CreateReservationCommand command, CancellationToken cancellationToken)
     {
 
         var userId = _currentUserService.UserId;
+        var email = _currentUserService.Email;
 
         if (!userId.HasValue)
             throw new UnauthorizedException("Usuario no identificado");
@@ -38,6 +41,12 @@ internal sealed class CreateReservationCommandHandler(IApplicationDbContext cont
         );
         _context.Reservations.Add(reservation);
         await _context.SaveChangesAsync(cancellationToken);
+
+        await _mediator.Publish(new ReservationConfirmedEvent(   
+            email,
+            reservation.StartDate,
+            reservation.EndDate
+        ), cancellationToken);
 
         _cache.Invalidate("Reservations");
         _cache.Invalidate("Rooms");

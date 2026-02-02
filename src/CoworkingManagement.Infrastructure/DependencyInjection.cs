@@ -48,6 +48,7 @@ public static class DependencyInjection
         services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddSingleton<ICacheService, CacheService>();
         services.AddScoped<ApplicationDbContextInitialiser>();
+        services.AddScoped<IEmailSender, EmailService>();
 
         return services;
     }

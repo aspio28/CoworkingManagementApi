@@ -4,6 +4,7 @@ using CoworkingManagement.Domain.Entities;
 using CoworkingManagement.Domain.Enums;
 using CoworkingManagement.Domain.Exceptions;
 using FluentAssertions;
+using MediatR;
 using Moq;
 using Moq.EntityFrameworkCore;
 
@@ -13,14 +14,18 @@ public class CancelReservationCommandHandlerTests
 {
     private readonly Mock<IApplicationDbContext> _contextMock;
     private readonly Mock<ICacheService> _cacheServiceMock;
+    private readonly Mock<IMediator> _mediator;
+    private readonly Mock<ICurrentUserService> _currentUserService;
     private readonly CancelReservationCommandHandler _handler;
 
     public CancelReservationCommandHandlerTests()
     {
         _contextMock = new Mock<IApplicationDbContext>();
         _cacheServiceMock = new Mock<ICacheService>();
+        _mediator = new Mock<IMediator>();
+        _currentUserService = new Mock<ICurrentUserService>();
 
-        _handler = new CancelReservationCommandHandler(_contextMock.Object, _cacheServiceMock.Object);
+        _handler = new CancelReservationCommandHandler(_contextMock.Object, _cacheServiceMock.Object, _currentUserService.Object, _mediator.Object);
     }
 
     [Fact]

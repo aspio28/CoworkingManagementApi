@@ -12,6 +12,21 @@ Follow these steps to set up the development environment and run the system loca
 * **EF Core Global Tool**:
   ```bash
     dotnet tool install --global dotnet-ef
+* **Email Configuration**: This project uses email notifications for confirming or canceling reservations. To send emails, you need to configure the SMTP settings in `appsettings.json`.
+
+Add the following section and replace the values with your email account and App Password:
+
+```json
+"Email": {
+  "From": "your-email@gmail.com",
+  "Smtp": {
+    "Host": "smtp.gmail.com",
+    "Port": 587,
+    "User": "your-email@gmail.com",
+    "Password": "your-app-password"
+  }
+}
+```
 
 ### 2. Clone the repository
 

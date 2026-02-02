@@ -3,6 +3,7 @@ using CoworkingManagement.Application.Features.Reservations.Commands.CreateReser
 using CoworkingManagement.Domain.Entities;
 using CoworkingManagement.Domain.Enums;
 using FluentAssertions;
+using MediatR;
 using Moq;
 using Moq.EntityFrameworkCore;
 
@@ -13,6 +14,7 @@ public class CreateReservationCommandHandlerTests
     private readonly Mock<IApplicationDbContext> _contextMock;
     private readonly Mock<ICurrentUserService> _currentUserServiceMock;
     private readonly Mock<ICacheService> _cacheServiceMock;
+    private readonly Mock<IMediator> _mediator;
     private readonly CreateReservationCommandHandler _handler;
 
     public CreateReservationCommandHandlerTests()
@@ -20,8 +22,8 @@ public class CreateReservationCommandHandlerTests
         _contextMock = new Mock<IApplicationDbContext>();
         _currentUserServiceMock = new Mock<ICurrentUserService>();
         _cacheServiceMock = new Mock<ICacheService>();
-
-        _handler = new CreateReservationCommandHandler(_contextMock.Object, _currentUserServiceMock.Object, _cacheServiceMock.Object);
+        _mediator = new Mock<IMediator>();
+        _handler = new CreateReservationCommandHandler(_contextMock.Object, _currentUserServiceMock.Object, _cacheServiceMock.Object, _mediator.Object);
     }
 
     [Fact]
